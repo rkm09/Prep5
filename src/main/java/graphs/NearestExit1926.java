@@ -1,5 +1,8 @@
 package graphs;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class NearestExit1926 {
     public static void main(String[] args) {
         char[][] maze = {{'+','+','.','+'},{'.','.','.','+'},{'+','+','+','.'}};
@@ -8,6 +11,15 @@ public class NearestExit1926 {
     }
 
     public static int nearestExit(char[][] maze, int[] entrance) {
+        int[][] directions = {{-1,0},{0,1},{1,0},{0,-1}};
+        int m = maze.length, n = maze[0].length;
+        Set<int[]> set = new HashSet<>();
+        for(int i = 0 ; i < m ; i++) {
+            for(int j = 0 ; j < n ; j++) {
+                if(maze[i][j] == '.')
+                    set.add(new int[]{i,j});
+            }
+        }
 
         return 0;
     }
