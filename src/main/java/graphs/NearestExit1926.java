@@ -1,27 +1,48 @@
 package graphs;
 
-import java.util.HashSet;
-import java.util.Set;
+
+import java.util.ArrayDeque;
+import java.util.Deque;
 
 public class NearestExit1926 {
+
     public static void main(String[] args) {
         char[][] maze = {{'+','+','.','+'},{'.','.','.','+'},{'+','+','+','.'}};
         int[] entrance = {1,2};
         System.out.println(nearestExit(maze, entrance));
     }
 
+//  bfs(in-place); time: O(m.n), space: O(max(m,n))
     public static int nearestExit(char[][] maze, int[] entrance) {
         int[][] directions = {{-1,0},{0,1},{1,0},{0,-1}};
-        int m = maze.length, n = maze[0].length;
-        Set<int[]> set = new HashSet<>();
-        for(int i = 0 ; i < m ; i++) {
-            for(int j = 0 ; j < n ; j++) {
-                if(maze[i][j] == '.')
-                    set.add(new int[]{i,j});
+        int rows = maze.length, cols = maze[0].length;
+//        mark the entrance as visited as it is not an exit
+        int startRow = entrance[0], startCol = entrance[1];
+        maze[startRow][startCol] = '+';
+//        start bfs from the entrance, and use a queue to store all the cells to be visited
+        Deque<int[]> queue = new ArrayDeque<>();
+        queue.offer(new int[]{startRow, startCol, 0});
+        while(!queue.isEmpty()) {
+            int[] currentState = queue.poll();
+            int currentRow = currentState[0], currentCol = currentState[1];
+            int currentDistance = currentState[2];
+//            for the current cell check its four neighbours
+            for(int[] direction : directions) {
+                int nextRow = currentRow + direction[0], nextCol = currentCol + direction[1];
+//               if there exists an empty unvisited neighbour
+                if(nextRow >= 0 && nextRow < rows && nextCol >= 0 && nextCol < cols
+                && maze[nextRow][nextCol] == '.') {
+//                    if this empty cell is an exit, return currentDistance + 1
+                    if(nextRow == 0 || nextRow == rows - 1 || nextCol == 0 || nextCol == cols - 1)
+                        return currentDistance + 1;
+//                    else, add this cell to the queue and mark it as visited
+                    maze[nextRow][nextCol] = '+';
+                    queue.offer(new int[]{nextRow, nextCol, currentDistance + 1});
+                }
             }
         }
-
-        return 0;
+//        if we finish, without finding an exit
+        return -1;
     }
 }
 
