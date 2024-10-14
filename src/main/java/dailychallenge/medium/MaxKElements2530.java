@@ -16,8 +16,9 @@ public class MaxKElements2530 {
         for(int num : nums)
             pq.add(num);
         while(k-- > 0 && !pq.isEmpty()) {
-            score += pq.peek();
-            pq.add((int)Math.ceil(pq.poll()/3.0));
+            int maxElement = pq.poll();
+            score += maxElement;
+            pq.add((int)Math.ceil(maxElement/3.0));
         }
         return score;
     }
