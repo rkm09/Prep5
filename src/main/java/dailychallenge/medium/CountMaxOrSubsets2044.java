@@ -9,7 +9,7 @@ public class CountMaxOrSubsets2044 {
 //    bit manipulation + dp; time: O(n.max), space: O(2^17)
     public static int countMaxOrSubsets(int[] nums) {
         int max = 0;
-        int[] dp = new int[1 << 17];
+        int[] dp = new int[1 << 17]; //2^16
 //        initialize empty subset
         dp[0] = 1;
 //        iterate through each element in the input array
