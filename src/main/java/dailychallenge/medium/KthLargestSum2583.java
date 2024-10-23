@@ -15,12 +15,78 @@ public class KthLargestSum2583 {
         System.out.println(kthLargestLevelSum(root, 1));
     }
 
-//    def; time: O(nlogn), space: O(n) ; queue + map
+//    Min heap + Queue; time: O(logn + logk), space: O(n)
+//    The level order traversal requires O(N) time. We add to the heap approximately (logN) times,
+//    with a maximum heap size of k, so building the heap takes O(logN⋅logk).
     public static long kthLargestLevelSum(TreeNode root, int k) {
+//        min heap of size k, at the end top element is the kth largest
+        PriorityQueue<Long> pq = new PriorityQueue<>();
+        Deque<TreeNode> queue = new ArrayDeque<>();
+        queue.offer(root);
+        while(!queue.isEmpty()) {
+//            level order traversal
+            int size = queue.size();
+            long sum = 0;
+            for(int i = 0 ; i < size ; i++) {
+                TreeNode node = queue.poll();
+                sum += node.val;
+//                add left child
+                if(node.left != null)
+                    queue.offer(node.left);
+//                add right child
+                if(node.right != null)
+                    queue.offer(node.right);
+            }
+            pq.offer(sum);
+            if(pq.size() > k) {
+//                evict the top element
+                pq.poll();
+            }
+        }
+        if(k > pq.size())
+            return -1;
+        return pq.peek();
+    }
+
+//    Max heap + Queue; time: O(log^2n + klogn); space: O(n)
+//    The level order traversal takes O(N) time. Since our heap has a maximum of O(logN) elements (equal to the tree’s height),
+//    adding a sum to the heap takes O(logN) time, resulting in a total heap build time of O(log^2N).
+//    Popping k−1 elements from the heap takes O(k⋅logN) time. Therefore, the overall time complexity is O(log^2N+k⋅logN).
+    public static long kthLargestLevelSum1(TreeNode root, int k) {
+//        max heap;
+        PriorityQueue<Long> pq = new PriorityQueue<>(Collections.reverseOrder());
+        Deque<TreeNode> queue = new ArrayDeque<>();
+        queue.offer(root);
+        while(!queue.isEmpty()) {
+//            level order traversal
+            int size = queue.size();
+            long sum = 0;
+            for(int i = 0 ; i < size ; i++) {
+                TreeNode node = queue.poll();
+                sum += node.val;
+//                add left child
+                if(node.left != null)
+                    queue.offer(node.left);
+//                add right child
+                if(node.right != null)
+                    queue.offer(node.right);
+            }
+            pq.offer(sum);
+        }
+        if(k > pq.size())
+            return -1;
+        for(int i = 0 ; i < k - 1 ; i++)
+            pq.remove();
+        return pq.peek();
+    }
+
+//    def; time: O(nlogn), space: O(n) ; Queue + Map
+    public static long kthLargestLevelSum2(TreeNode root, int k) {
         Deque<Pair<TreeNode, Integer>> queue = new ArrayDeque<>();
         queue.offer(new Pair<>(root, 1));
         Map<Integer, Long> levelSum = new HashMap<>();
         while(!queue.isEmpty()) {
+//            keep track of levels using a pair, use a map to keep track of sum of each of the levels
             Pair<TreeNode, Integer> nodeInfo = queue.poll();
             TreeNode node = nodeInfo.getKey();
             int level = nodeInfo.getValue();
