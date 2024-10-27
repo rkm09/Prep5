@@ -17,8 +17,41 @@ public class RemoveSubfolders1233 {
         List<String> result = new ArrayList<>();
 //        build trie from folder paths
         for(String path : folder) {
-
+            TrieNode currentNode = root;
+            String[] folderNames = path.split("/");
+            for(String folderName : folderNames) {
+//                skip empty folder name
+                if(folderName.isEmpty()) continue;
+//                create new node if it doesn't exist
+                if(!currentNode.children.containsKey(folderName))
+                    currentNode.children.put(folderName, new TrieNode());
+                currentNode = currentNode.children.get(folderName);
+            }
+//            mark the end of the folder path
+            currentNode.isEndOfFolder = true;
         }
+//        check each path of sub folders
+        for(String path : folder) {
+            TrieNode currentNode = root;
+            String[] folderNames = path.split("/");
+            boolean isSubFolder = false;
+            for(int i = 0 ; i < folderNames.length ; i++) {
+//                skip empty folder name
+                if(folderNames[i].isEmpty()) continue;
+                TrieNode nextNode = currentNode.children.get(folderNames[i]);
+//                check if the current folder path is a sub folder of an existing path
+                if(nextNode.isEndOfFolder && i != folderNames.length - 1) {
+                    isSubFolder = true;
+                    break; // found a sub folder
+                }
+                currentNode = nextNode;
+            }
+//            if not a sub folder, add to the result
+            if(!isSubFolder) {
+                result.add(path);
+            }
+        }
+
         return result;
     }
 

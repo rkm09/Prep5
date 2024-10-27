@@ -44,7 +44,7 @@ public class TreeQueries2458 {
     private void dfs(TreeNode node, int depth, int maxVal) {
         if(node == null) return;
         resultMap.put(node.val, maxVal);
-//        traverse left and right sub trees while updating the maxVal
+//        traverse left and right subtrees while updating the maxVal
         dfs(node.left, depth + 1, Math.max(maxVal, depth + 1 + getHeight(node.right)));
         dfs(node.right, depth + 1, Math.max(maxVal, depth + 1 + getHeight(node.left)));
     }
