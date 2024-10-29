@@ -10,7 +10,7 @@ public class LongestSquareStreak2401 {
         System.out.println(longestSquareStreak(nums));
     }
 
-//    sorting; time: O(nlogn), space: O(n)
+//    map & sorting; time: O(nlogn), space: O(n)
     public static int longestSquareStreak(int[] nums) {
 //        map to store the length of the square streak for each number
         Map<Integer, Integer> streakLengths = new HashMap<>();
