@@ -9,6 +9,14 @@ public class MinDistance2463 {
         System.out.println(minimumTotalDistance(robot, factory));
     }
 
+//    memoization; time: O(n^2.m), space: O(n.m)  [n - robots, m - factories]
+//    sorting :O(nlogn), O(mlogm)
+//    The nested loops that flatten the factory: O(n⋅m) positions in the worst case. If each factory has a maximum capacity
+//    equal to n, we could end up with O(n^2) factory positions in total.
+//    The recursive function calculateMinDistance uses memoization to store results for each combination of robotIdx and factoryIdx.
+//    Since each robot can potentially pair with each factory position, the number of unique state combinations is now O(n⋅m).
+//    However, the recursive calls can lead to up to O(n) depth due to each robot potentially iterating through all factory positions.
+//    Therefore, the overall time complexity is more accurately represented as O(n^2⋅m), as the flattening of factory positions majorly influences the complexity.
     public static long minimumTotalDistance(List<Integer> robot, int[][] factory) {
 //        sort the robot and factories by position
         Collections.sort(robot);
