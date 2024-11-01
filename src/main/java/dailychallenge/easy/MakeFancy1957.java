@@ -9,8 +9,28 @@ public class MakeFancy1957 {
         System.out.println(makeFancyString(s));
     }
 
-//    def; stack; time: O(n), space: O(n)
+//    time: O(n), space: O(n)
     public static String makeFancyString(String s) {
+        char prev = s.charAt(0);
+        StringBuilder sb = new StringBuilder();
+        sb.append(prev);
+        int frequency = 1;
+        for(int i =  1 ; i < s.length() ; i++) {
+            char curr = s.charAt(i);
+            if(curr == prev) {
+                frequency++;
+            } else {
+                frequency = 1;
+                prev = curr;
+            }
+            if(frequency < 3)
+                sb.append(curr);
+        }
+        return sb.toString();
+    }
+
+//    def; stack; time: O(n), space: O(n)
+    public static String makeFancyString1(String s) {
         Deque<Character> stack = new ArrayDeque<>();
         for(char c : s.toCharArray()) {
             stack.offer(c);
@@ -23,7 +43,7 @@ public class MakeFancy1957 {
             while(!stack.isEmpty() && c1 == stack.peek()) {
                 times++;
                 c1 = stack.pop();
-                if(times % 3 == 0) {
+                if(times == 3) {
                     times--;
                     continue;
                 }
