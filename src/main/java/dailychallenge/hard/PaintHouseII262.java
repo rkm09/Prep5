@@ -10,7 +10,7 @@ public class PaintHouseII262 {
     public static int minCostII(int[][] costs) {
         if(costs.length == 0) return 0;
         int k = costs[0].length, n = costs.length;
-        for(int house = 1 ; house < n ; house++) {
+        for(int house = 1   ; house < n ; house++) {
             for(int color = 0 ; color < k ; color++) {
                 int minCost = Integer.MAX_VALUE;
                 for(int previousColor = 0 ; previousColor < k ; previousColor++) {
