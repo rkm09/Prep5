@@ -6,8 +6,33 @@ public class CircularSentence2490 {
         System.out.println(isCircularSentence(sentence));
     }
 
-//    def; time: O(n), space: O(n)
+//     space optimized; time: O(n), space: O(n)
     public static boolean isCircularSentence(String sentence) {
+        int n = sentence.length();
+        for(int i = 0 ; i < n ; i++) {
+            if(sentence.charAt(i) == ' ' &&
+                    sentence.charAt(i - 1) != sentence.charAt(i + 1))
+                return false;
+        }
+        return sentence.charAt(0) == sentence.charAt(n - 1);
+    }
+
+//    string split; time: O(n), space: O(n)
+    public static boolean isCircularSentence1(String sentence) {
+        String[] words = sentence.split(" ");
+        int n = words.length;
+        char prev = words[n - 1].charAt(words[n - 1].length() - 1);
+        for (String word : words) {
+            char curr = word.charAt(0);
+            if (prev != curr) return false;
+            prev = word.charAt(word.length() - 1);
+        }
+        return true;
+    }
+
+
+//    def; split; time: O(n), space: O(n)
+    public static boolean isCircularSentence2(String sentence) {
         String[] words = sentence.split(" ");
         int n = words.length;
         if(n == 1) return words[0].charAt(0) == words[0].charAt(words[0].length() - 1);
