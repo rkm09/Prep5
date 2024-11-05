@@ -6,8 +6,24 @@ public class StringCompressionIII3163 {
         System.out.println(compressedString(word));
     }
 
-//    def;
+//    string manipulation; time: O(n), space: O(n)
     public static String compressedString(String word) {
+        StringBuilder sb = new StringBuilder();
+        int pos = 0, n = word.length();
+        while(pos < n) {
+            int cnt = 0;
+            char currentChar = word.charAt(pos);
+            while(pos < n && cnt < 9 && word.charAt(pos) == currentChar) {
+                cnt++;
+                pos++;
+            }
+            sb.append(cnt).append(currentChar);
+        }
+        return sb.toString();
+    }
+
+//    def;
+    public static String compressedString1(String word) {
         StringBuilder sb = new StringBuilder();
         int cnt = 1, n = word.length();
         if(n == 1) return n + word;
