@@ -14,17 +14,22 @@ public class CanSortArray3011 {
         int maxOfPrevSegment = Integer.MIN_VALUE;
         for (int i = 1 ; i < nums.length ; i++) {
             if (Integer.bitCount(nums[i]) == numOfSetBits) {
+//                element belongs to the same segment, update max and min
                 maxOfSegment = Integer.max(maxOfSegment, nums[i]);
                 minOfSegment = Integer.min(minOfSegment, nums[i]);
             } else {
+//                element belongs to a new segment, check if the arrangement is proper
                 if (minOfSegment < maxOfPrevSegment)
                     return false;
+//                update the previous segment's max
                 maxOfPrevSegment = maxOfSegment;
+//                start a new segment with the current element
                 minOfSegment = nums[i];
                 maxOfSegment = nums[i];
                 numOfSetBits = Integer.bitCount(nums[i]);
             }
         }
+//        final check for proper segment arrangement
         return minOfSegment > maxOfPrevSegment;
     }
 }
