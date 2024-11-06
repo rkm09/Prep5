@@ -9,8 +9,44 @@ public class SameEndSubstring2955 {
         System.out.println(Arrays.toString(sameEndSubstringCount(s, queries)));
     }
 
-//    def; brute force; TLE
+//    prefix sum; time: O(n + q), space: O(n) [q - number of queries, n - length]
     public static int[] sameEndSubstringCount(String s, int[][] queries) {
+        int n = s.length();
+//        2d array to store the prefix sum of character frequencies for each character from 'a' to 'z'
+        int[][] charFreqPrefixSum = new int[26][n];
+//        fill the frequency array
+        for(int i = 0 ; i < n ; i++)
+            charFreqPrefixSum[s.charAt(i) - 'a'][i]++;
+//        convert the frequency array to a prefix sum array
+        for(int i = 0 ; i < 26 ; i++) {
+            for(int j = 1 ; j < n ; j++) {
+                charFreqPrefixSum[i][j] += charFreqPrefixSum[i][j - 1];
+            }
+        }
+
+        int[] results = new int[queries.length];
+//        process each query
+        for(int i = 0 ; i < queries.length ; i++) {
+            int leftIndex = queries[i][0];
+            int rightIndex = queries[i][1];
+            int sameEndSubstringsCnt = 0;
+//            for each character calculate the frequency of occurrences within the query range
+            for(int charIndex = 0 ; charIndex < 26 ; charIndex++) {
+//                calculate the frequency within the query range
+                int leftFreq = (leftIndex == 0) ? 0 : charFreqPrefixSum[charIndex][leftIndex - 1];
+                int rightFreq = charFreqPrefixSum[charIndex][rightIndex];
+                int frequencyInRange = rightFreq - leftFreq;
+//                calculate the number of same end substrings for this character
+                sameEndSubstringsCnt += (frequencyInRange * (frequencyInRange + 1)) / 2;
+            }
+            results[i] = sameEndSubstringsCnt;
+        }
+
+        return results;
+    }
+
+//    def; brute force; TLE
+    public static int[] sameEndSubstringCount1(String s, int[][] queries) {
         int[] result = new int[queries.length];
         int k = 0;
         for(int[] query : queries) {
@@ -53,4 +89,17 @@ s consists only of lowercase English letters.
 1 <= queries.length <= 3 * 104
 queries[i] = [li, ri]
 0 <= li <= ri < s.length
+
+We don't actually need to know the exact positions of the characters to count the number of substrings that have the same character repeated within the range.
+Instead, we just need to know how often that character appears.
+One of the best ways to efficiently find the frequency of something in a range is by using a prefix sum array.
+A prefix sum array is like a running total; it gives you the sum of all elements up to and including that index.
+So, if we make an array that tracks how often a certain character shows up in a string, the prefix sum for that array
+will give us the total occurrences of that character up to any point in the string.
+To do this, we'll first make frequency arrays for all 26 letters of the alphabet. Each position in these arrays represents
+a spot in the string. We'll put a 1 if the character appears there or a 0 if it doesn’t.
+Once we have those frequency arrays, we’ll turn them into prefix sum arrays. This just means we add up all the values
+before each position, so now every position tells us how many times that character has appeared up to that point in
+the string. With that done, we can go through our queries. For each query, we can easily find how often a character appears between two positions by subtracting the prefix sum at the left boundary from the prefix sum at the right boundary. Using that frequency,
+we can then calculate how many substrings are possible for that character and do the same for all the characters.
  */
