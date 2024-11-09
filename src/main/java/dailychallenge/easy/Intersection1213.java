@@ -10,8 +10,33 @@ public class Intersection1213 {
         System.out.println(arraysIntersection(arr1, arr2, arr3));
     }
 
-//    brute force with TreeMap; time: O(n), space: O(n)
+//    three pointers; time: O(n), space: O(1)
+//    since input is already sorted, we don't need to maintain a frequency map;
+//    - each time, we should increment the pointer that points to the smallest number, i.e., min(arr1[p1], arr2[p2], arr3[p3]) forward;
+//    - if the numbers pointed to by p1, p2, and p3 are the same, we should then store it and move all three pointers forward.
+//    we don't have to move the pointer pointing to the smallest number - we only need to move the pointer pointing to a smaller number.
+//    In this way, we avoid comparing three numbers and finding the smallest one before deciding which one to move.
     public static List<Integer> arraysIntersection(int[] arr1, int[] arr2, int[] arr3) {
+        List<Integer> result = new ArrayList<>();
+        int p1 = 0, p2 = 0, p3 = 0;
+        int n1 = arr1.length, n2 = arr2.length, n3 = arr3.length;
+        while(p1 < n1 && p2 < n2 && p3 < n3) {
+            if(arr1[p1] == arr2[p2] && arr2[p2] == arr3[p3]) {
+                result.add(arr1[p1]);
+                p1++; p2++; p3++;
+            } else if(arr1[p1] < arr2[p2]) {
+                p1++;
+            } else if(arr2[p2] < arr3[p3]) {
+                p2++;
+            } else {
+                p3++;
+            }
+        }
+        return result;
+    }
+
+//    brute force with TreeMap; time: O(n), space: O(n)
+    public static List<Integer> arraysIntersection1(int[] arr1, int[] arr2, int[] arr3) {
 //        note: we need to take treemap instead to maintain order
         Map<Integer, Integer> counter = new TreeMap<>();
         List<Integer> result = new ArrayList<>();
