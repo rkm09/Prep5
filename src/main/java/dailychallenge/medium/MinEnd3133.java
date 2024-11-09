@@ -5,7 +5,6 @@ public class MinEnd3133 {
         System.out.println(minEnd(3,4));
     }
 
-
 //    consecutive XORing; time: O(n), space: O(1)
 //    we take the current number and increment it. But after incrementing, we force the new number to keep the bit pattern of x by applying a bitwise OR with x.
 //    This ensures that no bits from x are lost in the process
