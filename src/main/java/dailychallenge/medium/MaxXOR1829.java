@@ -10,8 +10,7 @@ public class MaxXOR1829 {
 
 //    prefix sum + bitmask; time: O(n), space: O(n)
 //    we can achieve the greatest value by choosing a k that will make the first maximumBits bits set to all 1s.
-//    To quickly find this inverse, we create a bitmask called mask. This mask can be generated using the formula mask = (1 << maximumBit) - 1,
-//    which gives us a number where the first maximumBit bits are set to 1.
+//    to quickly find this inverse, we create a bitmask which gives us a number where the first maximumBit bits are set to 1.
     public static int[] getMaximumXor(int[] nums, int maximumBit) {
         int n = nums.length;
         int[] prefixXOR = new int[n];
