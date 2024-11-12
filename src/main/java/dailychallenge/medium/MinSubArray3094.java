@@ -43,7 +43,7 @@ public class MinSubArray3094 {
 //    convert bit counts array back to number using OR
     private int convertBitCountsToNumber(int[] bitCounts) {
         int result = 0;
-        for(int bitPosition = 0 ; bitPosition < bitCounts.length ; bitPosition++) {
+        for(int bitPosition = 0 ; bitPosition < 32 ; bitPosition++) {
             if(bitCounts[bitPosition] != 0)
                 result |= 1 << bitPosition;
         }
