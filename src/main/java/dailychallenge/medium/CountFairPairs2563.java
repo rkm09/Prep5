@@ -4,12 +4,13 @@ import java.util.Arrays;
 
 public class CountFairPairs2563 {
     public static void main(String[] args) {
-        int[] nums = {1,7,9,2,5};
+        int[] nums = {0,1,7,4,4,5};
         CountFairPairs2563 c = new CountFairPairs2563();
-        System.out.println(c.countFairPairs(nums, 11, 11));
+        System.out.println(c.countFairPairs(nums, 3, 6));
     }
 
-//    two pointers; time: O(nlogn), space: O(logn)
+//    sorting + two pointers; time: O(nlogn), space: O(logn)
+//    Sorting the array allows us to find pairs easily because the order of addition does not change the sum
     public long countFairPairs(int[] nums, int lower, int upper) {
         Arrays.sort(nums);
         return lowerBound(nums, upper + 1) - lowerBound(nums, lower);
@@ -50,4 +51,15 @@ Constraints:
 nums.length == n
 -109 <= nums[i] <= 109
 -109 <= lower <= upper <= 109
+ */
+
+
+/*
+Binary search:
+
+
+Two pointer:
+In the previous solution, we noticed that when selecting the second element of our pair, it’s important to consider only those that are consecutive to the first element. This creates a “window” of valid choices. Specifically, this window starts from the index right after our chosen first element (which we can call current index + 1). We ignore elements before this index because they would lead to redundant pairs.
+
+
  */
