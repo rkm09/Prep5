@@ -60,4 +60,7 @@ where 0 represents unsorted portions and 1 represents sorted ones, it looks like
 Since the [1, 1, 1] portion is sorted, we can actually perform a binary search on this sorted section. This allows us to
 find the earliest point on the right where any sorted left section can merge with it, minimizing the middle subarray that needs to be removed. However, we can optimize this further by replacing binary search (O(nlogn)) with a more efficient two-pointer approach, reducing the complexity to O(n).
 A key insight here is that the unsorted yellow region must always be part of the removed subarray since it breaks the sorted order.
+
+For the two sorted sections to form one valid sorted sequence when combined, we need the largest element in the left portion
+(arr[left-1]) to be less than or equal to the smallest element in the right portion (arr[right]).
  */
