@@ -10,10 +10,9 @@ public class ResultsArray3254 {
 
 //    def; time: O(n), space: O(1)
     public static int[] resultsArray(int[] nums, int k) {
-        int n = nums.length;
-        if(n == 1) return new int[]{nums[0]};
-        int[] results = new int[n - k + 1];
         if(k == 1) return nums;
+        int n = nums.length;
+        int[] results = new int[n - k + 1];
         for(int i = 0 ; i < n - k + 1; i++) {
             int cnt = 1;
             int left = i, right = i + 1;
