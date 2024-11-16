@@ -8,11 +8,31 @@ public class ResultsArray3254 {
         System.out.println(Arrays.toString(resultsArray(nums, 3)));
     }
 
-//    def; time: O(n), space: O(1)
+//    optimized counter; time: O(n), space: O(1)
     public static int[] resultsArray(int[] nums, int k) {
         if(k == 1) return nums;
         int n = nums.length;
         int[] results = new int[n - k + 1];
+        Arrays.fill(results, -1);
+        int consecutiveCnt = 1;
+        for(int i = 0 ; i < n - 1 ; i++) {
+            if(nums[i] + 1 == nums[i + 1])
+                consecutiveCnt++;
+            else
+                consecutiveCnt = 1;
+            if(consecutiveCnt >= k) {
+                results[i - k + 2] = nums[i + 1];
+            }
+        }
+        return results;
+    }
+
+//    def; time: O(n), space: O(1)
+    public static int[] resultsArray1(int[] nums, int k) {
+        if(k == 1) return nums;
+        int n = nums.length;
+        int[] results = new int[n - k + 1];
+        Arrays.fill(results, -1);
         for(int i = 0 ; i < n - k + 1; i++) {
             int cnt = 1;
             int left = i, right = i + 1;
@@ -22,10 +42,7 @@ public class ResultsArray3254 {
                         results[i] = nums[right]; break;
                     }
                     left++; right++; cnt++;
-                } else {
-                    results[i] = -1;
-                    break;
-                }
+                } else break;
             }
         }
         return results;
