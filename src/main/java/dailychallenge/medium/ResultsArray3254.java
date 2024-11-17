@@ -37,7 +37,7 @@ public class ResultsArray3254 {
             int cnt = 1;
             int left = i, right = i + 1;
             while(cnt < k) {
-                if((nums[left] < nums[right]) && (nums[left] + 1 == nums[right])) {
+                if(nums[left] + 1 == nums[right]) {
                     if(cnt + 1 == k) {
                         results[i] = nums[right]; break;
                     }
