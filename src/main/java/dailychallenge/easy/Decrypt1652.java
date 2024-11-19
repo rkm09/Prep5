@@ -1,9 +1,11 @@
 package dailychallenge.easy;
 
+import java.util.Arrays;
+
 public class Decrypt1652 {
     public static void main(String[] args) {
         int[] code = {5,7,1,4};
-        System.out.println(decrypt(code, 3));
+        System.out.println(Arrays.toString(decrypt(code, 3)));
     }
 
 //    sliding window; time: O(n), space: O(1)
