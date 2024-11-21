@@ -7,7 +7,7 @@ public class TakeCharacters2516 {
     }
 
     public static int takeCharacters(String s, int k) {
-        
+        return 0;
     }
 }
 
