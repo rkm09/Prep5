@@ -9,6 +9,7 @@ public class FindCelebrity277 extends Relation {
 
     public int findCelebrity(int n) {
         return 0;
+
     }
 }
 
