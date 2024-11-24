@@ -21,7 +21,7 @@ public class MaxMatrixSum1975 {
         }
 //        adjust if the count is negative
         if(negativeCount % 2 != 0)
-            totalSum -= 2 * minAbsVal;
+            totalSum -= (long) 2 * minAbsVal;
         return totalSum;
     }
 }
