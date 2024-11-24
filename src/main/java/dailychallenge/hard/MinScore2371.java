@@ -20,15 +20,15 @@ public class MinScore2371 {
         int[] colMax = new int[cols];
         Arrays.fill(rowMax, 1);
         Arrays.fill(colMax, 1);
-        List<int[]> nums = new ArrayList<>();
+        List<int[]> elements = new ArrayList<>();
         for(int r = 0 ; r < rows ; r++) {
             for(int c = 0 ; c < cols ; c++) {
                 int val = grid[r][c];
-                nums.add(new int[] {val, r, c});
+                elements.add(new int[] {val, r, c});
             }
         }
-        nums.sort(Comparator.comparingInt(a -> a[0]));
-        for(int[] num : nums) {
+        elements.sort(Comparator.comparingInt(a -> a[0]));
+        for(int[] num : elements) {
             int x = num[1];
             int y = num[2];
             // Determine the smallest assignable value based on rows and cols constraints
