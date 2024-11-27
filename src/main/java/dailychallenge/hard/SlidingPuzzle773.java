@@ -68,15 +68,6 @@ public class SlidingPuzzle773 {
 
 //    brute force; dfs; time: O(m.n)!(m.n)^2, space: O(m.n)!
     public int slidingPuzzle1(int[][] board) {
-//        direction map for zero's possible moves in 1D representation of 2*3 grid // 1st row: 0-1-2, second row: 3-4-5
-        int[][] directions = {
-                {1,3},
-                {0,4,2},
-                {1,5},
-                {0,4},
-                {3,1,5},
-                {4,2}
-        };
         String target = "123450";
         StringBuilder startState = new StringBuilder();
 //        convert the 2D board into a string representation
