@@ -1,11 +1,16 @@
 package dailychallenge.hard;
 
-import java.util.ArrayDeque;
-import java.util.Deque;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public class SlidingPuzzle773 {
+    int[][] directions = {
+            {1,3},
+            {0,4,2},
+            {1,5},
+            {0,4},
+            {3,1,5},
+            {4,2}
+    };
     public static void main(String[] args) {
         SlidingPuzzle773 s = new SlidingPuzzle773();
         int[][] board = {{1,2,3},{4,0,5}};
@@ -15,14 +20,6 @@ public class SlidingPuzzle773 {
 //    bfs; time: O((m.n)! * (m.n)), space: O(m.n)!
     public int slidingPuzzle(int[][] board) {
 //        direction map for zero's possible moves in 1D representation of 2*3 grid // 1st row: 0-1-2, second row: 3-4-5
-        int[][] directions = {
-                {1,3},
-                {0,4,2},
-                {1,5},
-                {0,4},
-                {3,1,5},
-                {4,2}
-        };
         String target = "123450";
         StringBuilder startState = new StringBuilder();
 //        convert the 2D board into a string representation
@@ -68,6 +65,48 @@ public class SlidingPuzzle773 {
         return sb.toString();
     }
 
+
+//    brute force; dfs; time: O(m.n)!(m.n)^2, space: O(m.n)!
+    public int slidingPuzzle1(int[][] board) {
+//        direction map for zero's possible moves in 1D representation of 2*3 grid // 1st row: 0-1-2, second row: 3-4-5
+        int[][] directions = {
+                {1,3},
+                {0,4,2},
+                {1,5},
+                {0,4},
+                {3,1,5},
+                {4,2}
+        };
+        String target = "123450";
+        StringBuilder startState = new StringBuilder();
+//        convert the 2D board into a string representation
+        for(int[] row : board) {
+            for(int cell : row) {
+                startState.append(cell);
+            }
+        }
+//        store visited states
+        Map<String, Integer> visited = new HashMap<>();
+//        start dfs traversal with initial board position
+        dfs(startState.toString(), visited, startState.indexOf("0"), 0);
+//        return the minimum moves required to reach the target state, or -1 if unreachable
+        return visited.getOrDefault(target, -1);
+    }
+
+    private void dfs(String state, Map<String, Integer> visited, int zeroPos, int moves) {
+//        skip if this state has been visited with fewer or equal moves
+        if(visited.containsKey(state) && visited.get(state) <= moves)
+            return;
+        visited.put(state, moves);
+//        try moving zero to each possible adjacent position
+        for(int nextPos : directions[zeroPos]) {
+//            swap to generate new state
+            String newState = swap(state, zeroPos, nextPos);
+//            recursive dfs with updated state and move count
+            dfs(newState, visited, zeroPos, moves + 1);
+        }
+    }
+
 }
 
 /*
@@ -104,19 +143,19 @@ Each value board[i][j] is unique.
 /*
 The DFS approach explores all possible board states before reaching the final state, which can be inefficient. Although we might find the solution early, DFS will still continue to explore all paths, potentially with non-optimal move counts. To address this, we switch to Breadth-First Search (BFS). BFS is better suited in scenarios like this because it explores all states at the current move level before going deeper, ensuring that the first time it reaches the goal, it has found the shortest path.
 Our setup remains similar: we convert the board to a 1-D string and use a set to track visited states. A queue will handle the BFS traversal, starting from the initial state. The queue’s structure works well to support BFS’s layered exploration, since each level is processed sequentially and we stop as soon as we reach the goal.
-
 We then loop while the queue is not empty, processing all states at the current move count. If we encounter the final state, we return the current move count as the answer. Otherwise, we explore all possible moves from the current state, modify the board accordingly, and, if unvisited, add the new state to the queue for further exploration.
 Let m be the number of rows and n be the number of columns of the board.
 
-Time complexity: O((m⋅n)!×(m⋅n))
-
-The algorithm uses Breadth-First Search (BFS) to explore all possible board configurations. With (m⋅n)! unique configurations, BFS may process each configuration once. Each configuration requires checking moves and generating new ones, taking O(m⋅n) operations.
-
+BFS: Time complexity: O((m⋅n)!×(m⋅n))
+The algorithm uses Breadth-First Search (BFS) to explore all possible board configurations. With (m⋅n)! unique
+configurations, BFS may process each configuration once. Each configuration requires checking moves and generating new ones, taking O(m⋅n) operations.
 Therefore, the overall time complexity is O((m⋅n)!×(m⋅n)).
-
 Space complexity: O((m⋅n)!)
-
 The space complexity is determined by the visited set and the BFS queue, each of which can hold up to (m⋅n)! unique configurations in the worst case. Therefore, the space complexity is O((m⋅n)!).
 
+DFS:
+In DFS, each of the (m⋅n)! possible board states can be revisited multiple times due to different move sequences, as DFS doesn’t prioritize the shortest
+path and may explore all possible paths, reaching the same state repeatedly. Since each state has up to four possible moves on a 2D board, DFS could re-explore each
+configuration from different directions, leading to up to O((m⋅n)!×(m⋅n)) recursive calls. Generating each new configuration requires O(m⋅n) operations.
 
  */
