@@ -85,8 +85,10 @@ There are no repeated roads among the queries.
  */
 
 /*
-Bottom up dp:
-Complexity Analysis
+Approach 3: Iterative Dynamic Programming (Bottom-Up)
+While the top-down dynamic programming approach is often intuitive, it can become less effective in certain situations, particularly due to uncontrolled recursion depth. This is especially true for larger input sizes, where deep recursion can lead to stack overflow errors. To avoid this risk, it is generally considered a good idea to convert recursive dynamic programming solutions into iterative ones.
+In an iterative approach, we essentially take each line from the previous recursive algorithm and translate it into its iterative equivalent. A key consideration in this translation is that when we compute dp[u], it represents the result of the findMinDistance function for node u. Thus, both the return value and the runtime complexity of findMinDistance(u) can be directly replaced with dp[u].
+Complexity Analysis:
 Let n be the number of cities and q the number of queries.
 Time Complexity: O(q×(n+q)).
 The findMinDistance function iterates over each edge exactly once, so its time complexity for a graph with e edges is O(e).
