@@ -1,15 +1,57 @@
 package dailychallenge.medium;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class ShortestDistance3243 {
     public static void main(String[] args) {
+        ShortestDistance3243 s = new ShortestDistance3243();
         int[][] queries = {{2,4},{0,2},{0,4}};
-        System.out.println(Arrays.toString(shortestDistanceAfterQueries(5, queries)));
+        System.out.println(Arrays.toString(s.shortestDistanceAfterQueries(5, queries)));
     }
 
-    public static int[] shortestDistanceAfterQueries(int n, int[][] queries) {
-        
+//    bottom up dp; time: O((n + q) * q), space: O(n + q)
+    public int[] shortestDistanceAfterQueries(int n, int[][] queries) {
+        List<Integer> resList = new ArrayList<>();
+        List<List<Integer>> adjList = new ArrayList<>();
+//        initialize adjacency list
+        for(int i = 0 ; i < n ; i++)
+            adjList.add(new ArrayList<>());
+//        initialize edges between consecutive nodes
+        for(int i = 0 ; i < n - 1 ; i++)
+            adjList.get(i).add(i + 1);
+//        process each query to add new nodes
+        for(int[] road : queries) {
+            int u = road[0];
+            int v = road[1];
+//            add the directed edge from u to v
+            adjList.get(u).add(v);
+//            calculate the minimum distance after adding the new node
+            resList.add(minDistance(adjList, n));
+        }
+//        convert list to array before returning
+        int[] res = new int[resList.size()];
+        for(int i = 0 ; i < resList.size() ; i++)
+            res[i] = resList.get(i);
+        return res;
+    }
+
+//    function to find the minimum distance from 0 to n - 1
+    private int minDistance(List<List<Integer>> adjList, int n) {
+        int[] dp = new int[n];
+//        base case: distance to destination (n-1) is 0
+        dp[n - 1] = 0;
+        for(int currentNode = n - 2 ; currentNode >= 0 ; currentNode--) {
+            int minDistance = n;
+//            explore neighbours to find the minimum distance
+            for(int neighbour : adjList.get(currentNode)) {
+                minDistance = Math.min(minDistance, dp[neighbour] + 1);
+            }
+//            store the calculated distance for the current node
+            dp[currentNode] = minDistance;
+        }
+        return dp[0];
     }
 }
 
@@ -40,4 +82,16 @@ queries[i].length == 2
 1 < queries[i][1] - queries[i][0]
 There are no repeated roads among the queries.
 
+ */
+
+/*
+Bottom up dp:
+Complexity Analysis
+Let n be the number of cities and q the number of queries.
+Time Complexity: O(q×(n+q)).
+The findMinDistance function iterates over each edge exactly once, so its time complexity for a graph with e edges is O(e).
+Therefore, like the previous approaches, the total time complexity of the algorithm can be expressed as:
+O(n)+O(n+1)+...+O(n+q−1)= O(q×(n+q)).
+Space Complexity: O(n+q).
+The total space complexity is once again determined by the size of the adjacency list which is at most O(n+q).
  */
