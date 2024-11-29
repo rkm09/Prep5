@@ -1,7 +1,9 @@
 package dailychallenge.hard;
 
 import java.util.ArrayDeque;
+import java.util.Comparator;
 import java.util.Deque;
+import java.util.PriorityQueue;
 
 public class MinimumObstacles2290 {
 //    directions for movement; right, left, down, up
@@ -17,7 +19,8 @@ public class MinimumObstacles2290 {
         System.out.println(m.minimumObstacles(grid));
     }
 
-//    bfs; time: O(m.n), space: O(m.n)
+//    0-1 bfs; time: O(m.n), space: O(m.n)
+//    cells are processed in increasing order of costs
     public int minimumObstacles(int[][] grid) {
         int m = grid.length, n = grid[0].length;
 //        distance matrix used to store minimum obstacles removed to reach cell
@@ -56,6 +59,36 @@ public class MinimumObstacles2290 {
     private boolean isValid(int[][] grid, int row, int col) {
         return row >= 0 && row < grid.length && col >= 0 && col < grid[0].length;
     }
+
+//    dijikstra; time: O(m.nlog(m.n)), space: O(m.n)
+    public int minimumObstacles1(int[][] grid) {
+        int m = grid.length, n = grid[0].length;
+        int[][] minObstacles = new int[m][n];
+        PriorityQueue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(a -> a[0]));
+        for(int i = 0 ; i < m ; i++)
+            for(int j = 0 ; j < n ; j++)
+                minObstacles[i][j] = Integer.MAX_VALUE;
+        minObstacles[0][0] = 0;
+        pq.offer(new int[]{0,0,0});
+        while(!pq.isEmpty()) {
+            int[] current = pq.poll();
+            int obstacles = current[0], row = current[1], col = current[2];
+            if(row == m - 1 && col == n - 1)
+                return obstacles;
+            for(int[] direction : directions) {
+                int newRow = row + direction[0];
+                int newCol = col + direction[1];
+                if(isValid(grid, newRow, newCol)) {
+                    int newObstacles = obstacles + grid[newRow][newCol];
+                    if(newObstacles < minObstacles[newRow][newCol]) {
+                        minObstacles[newRow][newCol] = newObstacles;
+                        pq.offer(new int[]{newObstacles, newRow, newCol});
+                    }
+                }
+            }
+        }
+        return minObstacles[m - 1][n - 1];
+    }
 }
 
 /*
@@ -83,4 +116,19 @@ n == grid[i].length
 grid[i][j] is either 0 or 1.
 grid[0][0] == grid[m - 1][n - 1] == 0
 
+ */
+
+/*
+Approach 2: 0-1 Breadth-First Search (BFS)
+As stated earlier, moving through cells without obstacles has no cost. Therefore, we prioritize exploring neighboring empty cells first, only moving to cells with obstacles when no free cells are left.
+We perform a BFS using a deque to manage the queue. When exploring neighboring cells, we add empty cells to the front of the deque for immediate exploration, and cells with obstacles to the back, delaying their exploration.
+We maintain a result grid, minObstacles, initialized to infinity (indicating they are unvisited), to track the minimum obstacles encountered at each cell. We'll add the top left cell to the deque and begin our exploration. At each step, we'll pop the top cell in the deque and explore its neighbors. All empty neighbors go to the front of the deque, while others go to the bottom with their obstacle count increased by 1. Simultaneously, we'll update the minObstacles value for each neighboring position.
+Once all cells are explored, the value at the bottom-right cell of minObstacles will give the minimum obstacles encountered on the shortest path.
+Let m be the number of rows and n be the number of columns in the grid.
+Time complexity: O(m⋅n)
+Each of the m⋅n cells in the grid is visited exactly once because we only process unvisited cells. The deque operations are all O(1).
+Thus, the total time complexity is O(m⋅n).
+Space complexity: O(m⋅n)
+The minObstacles array and the deque both take O(m⋅n) space. All other variables take constant space.
+Thus, the space complexity remains O(m⋅n).
  */
