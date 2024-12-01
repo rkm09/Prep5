@@ -1,5 +1,7 @@
 package dailychallenge.hard;
 
+import java.util.*;
+
 public class ValidArrangement2097 {
     public static void main(String[] args) {
         ValidArrangement2097 v = new ValidArrangement2097();
@@ -7,8 +9,25 @@ public class ValidArrangement2097 {
         int[][] res = v.validArrangement(pairs);
     }
 
-    public static int[][] validArrangement(int[][] pairs) {
-        
+//    eulerian path; time: O(v + e), space: O(v + e)
+    public int[][] validArrangement(int[][] pairs) {
+        Map<Integer, Deque<Integer>> adjMap = new HashMap<>();
+        Map<Integer, Integer> inDegree = new HashMap();
+        Map<Integer, Integer> outDegree = new HashMap();
+//        build adjacency map and track in degree and out degree
+        for(int[] pair : pairs) {
+            int start = pair[0], end = pair[1];
+            outDegree.put(start,);
+        }
+    }
+
+    private void visit(int node, Map<Integer, Deque<Integer>> adjMap, List<Integer> res) {
+        Deque<Integer> neighbours = adjMap.get(node);
+        while(neighbours != null && !neighbours.isEmpty()) {
+            int nextNode = neighbours.poll();
+            visit(nextNode, adjMap, res);
+        }
+        res.add(node);
     }
 }
 
