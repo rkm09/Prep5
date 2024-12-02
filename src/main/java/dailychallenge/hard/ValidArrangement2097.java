@@ -9,7 +9,7 @@ public class ValidArrangement2097 {
         int[][] res = v.validArrangement(pairs);
     }
 
-//    eulerian path; time: O(v + e), space: O(v + e)
+//    euler path; time: O(v + e), space: O(v + e)
     public int[][] validArrangement(int[][] pairs) {
         Map<Integer, Deque<Integer>> adjMap = new HashMap<>();
         Map<Integer, Integer> inDegree = new HashMap();
@@ -17,8 +17,10 @@ public class ValidArrangement2097 {
 //        build adjacency map and track in degree and out degree
         for(int[] pair : pairs) {
             int start = pair[0], end = pair[1];
-            outDegree.put(start,);
+
         }
+        int[][] res = {};
+        return res;
     }
 
     private void visit(int node, Map<Integer, Deque<Integer>> adjMap, List<Integer> res) {
