@@ -56,6 +56,53 @@ public class ValidArrangement2097 {
         res.add(node);
     }
 
+//    iterative; time: O(v + e), space: O(v + e)
+    public int[][] validArrangement1(int[][] pairs) {
+        Map<Integer, LinkedList<Integer>> adjMap = new HashMap<>();
+        Map<Integer, Integer> inDegree = new HashMap<>();
+        Map<Integer, Integer> outDegree = new HashMap<>();
+        for(int[] pair : pairs) {
+            int start = pair[0];
+            int end = pair[1];
+            adjMap.computeIfAbsent(start, k -> new LinkedList<>()).add(end);
+            outDegree.put(start, outDegree.getOrDefault(start, 0) + 1);
+            inDegree.put(end, inDegree.getOrDefault(end, 0) + 1);
+        }
+        int startNode = -1;
+        for(int key : outDegree.keySet()) {
+            if(outDegree.get(key) == inDegree.getOrDefault(key, 0) + 1) {
+                startNode = key;
+                break;
+            }
+        }
+        if(startNode == -1)
+            startNode = pairs[0][0];
+        List<Integer> res = new ArrayList<>();
+//        iterative dfs
+        Deque<Integer> stack = new ArrayDeque<>();
+        stack.push(startNode);
+        while(!stack.isEmpty()) {
+            int node = stack.peek();
+            LinkedList<Integer> neighbours = adjMap.getOrDefault(node, new LinkedList<>());
+            if(neighbours.size() > 0) {
+                int nextNode = neighbours.removeFirst();
+                stack.push(nextNode);
+            } else {
+                res.add(node);
+                stack.pop();
+            }
+        }
+        Collections.reverse(res);
+        int[][] result = new int[pairs.length][2];
+        for(int i = 0 ; i < res.size() - 1 ; i++) {
+            result[i] = new int[] {
+                    res.get(i),
+                    res.get(i + 1)
+            };
+        }
+        return result;
+    }
+
 }
 
 /*
