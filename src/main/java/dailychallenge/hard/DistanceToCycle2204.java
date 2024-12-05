@@ -1,6 +1,5 @@
 package dailychallenge.hard;
 
-import java.lang.reflect.Array;
 import java.util.Arrays;
 
 public class DistanceToCycle2204 {
