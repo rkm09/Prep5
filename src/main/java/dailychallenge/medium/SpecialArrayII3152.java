@@ -3,7 +3,6 @@ package dailychallenge.medium;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
 
 public class SpecialArrayII3152 {
     public static void main(String[] args) {
@@ -16,8 +15,51 @@ public class SpecialArrayII3152 {
         System.out.println(Arrays.toString(isArraySpecial(nums2,queries2)));
     }
 
-//    binary search; time: O(n + mlogn), space: O(n) [n - nums, m - queries]
+
+//    prefix sum; time: O(m + n), space: O(n)
     public static boolean[] isArraySpecial(int[] nums, int[][] queries) {
+        boolean[] res = new boolean[queries.length];
+        int[] prefixSum = new int[nums.length];
+        for(int i = 1 ; i < nums.length ; i++) {
+            if(nums[i] % 2 == nums[i - 1] % 2) // new violating index found
+                prefixSum[i] = prefixSum[i - 1] + 1;
+            else
+                prefixSum[i] = prefixSum[i - 1];
+        }
+        int idx = 0;
+        for(int[] query : queries) {
+            int start = query[0], end = query[1];
+            res[idx++] = prefixSum[end] - prefixSum[start] == 0;
+        }
+        return res;
+    }
+
+//    sliding window; time: O(m + n), space: O(n)
+    public static boolean[] isArraySpecial1(int[] nums, int[][] queries) {
+        boolean[] res = new boolean[queries.length];
+        int[] maxReachable = new int[nums.length];
+        int end = 0, n = nums.length;
+//        compute the maximum reachable index for each starting index
+        for(int start = 0 ; start < n ; start++) {
+//            ensure end always starts from current index or beyond
+            end = Math.max(start, end);
+//            expand end as long as adjacent elements have different parity
+            while(end < n - 1 && nums[end] % 2 != nums[end + 1] % 2) {
+                end++;
+            }
+//            store the farthest reachable index from start
+            maxReachable[start] = end;
+        }
+        int idx = 0;
+        for(int[] query : queries) {
+            int start = query[0], endQuery = query[1];
+            res[idx++] = endQuery <= maxReachable[start];
+        }
+        return res;
+    }
+
+//    binary search; time: O(n + mlogn), space: O(n) [n - nums, m - queries]
+    public static boolean[] isArraySpecial2(int[] nums, int[][] queries) {
         List<Integer> violatingIndices = new ArrayList<>();
         boolean[] res = new boolean[queries.length];
         for(int i = 1 ; i < nums.length ; i++) {
