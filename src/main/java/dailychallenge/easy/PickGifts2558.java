@@ -8,7 +8,7 @@ public class PickGifts2558 {
         System.out.println(pickGifts(gifts, 4));
     }
 
-//    def; maxheap; time: O(n), space: O(n)
+//    def; max heap; time: O(n), space: O(n)
     public static long pickGifts(int[] gifts, int k) {
         PriorityQueue<Integer> pq = new PriorityQueue<>((a,b) -> b - a);
         for(int gift : gifts) {
