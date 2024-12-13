@@ -1,8 +1,5 @@
 package graphs;
 
-import common.Pair;
-
-import java.util.*;
 
 public class CheapestFlights787 {
     public static void main(String[] args) {
@@ -12,17 +9,7 @@ public class CheapestFlights787 {
     }
 
     public int findCheapestPrice(int n, int[][] flights, int src, int dst, int k) {
-        Map<Integer, List<Pair<Integer, Integer>>> adjMap = new HashMap<>();
-        for(int[] flight : flights) {
-            adjMap.computeIfAbsent(flight[0], a -> new ArrayList<>()).add(new Pair<>(flight[1], flight[2]));
-        }
-        Deque<Pair<Integer, Integer>> queue = new ArrayDeque<>();
-        queue.offer(new Pair<>(src, 0));
-        int cheapest = Integer.MAX_VALUE;
-        while(!queue.isEmpty()) {
-            int size = queue.size();
-
-        }
+        int cheapest = 0;
         return cheapest;
     }
 }
