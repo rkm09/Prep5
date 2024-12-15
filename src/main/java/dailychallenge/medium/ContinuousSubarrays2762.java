@@ -1,14 +1,19 @@
 package dailychallenge.medium;
 
+
+import java.util.Comparator;
+import java.util.PriorityQueue;
 import java.util.TreeMap;
 
 public class ContinuousSubarrays2762 {
     public static void main(String[] args) {
         int[] nums = {5,4,2,4};
-        System.out.println(continuousSubarrays(nums));
+        int[] nums1 = {65,66,67,66,66,65,64,65,65,64};
+        //System.out.println(continuousSubarrays(nums1));
+        System.out.println(continuousSubarrays1(nums1));
     }
 
-//    treemap(sliding window); time: O(nlogk) ~ O(n), space: O(k) ~ O(1)
+//    sliding window (treemap); time: O(nlogk) ~ O(n), space: O(k) ~ O(1)
     public static long continuousSubarrays(int[] nums) {
 //        tree map to maintain sorted frequency map of current window
         TreeMap<Integer, Integer> freqMap = new TreeMap<>();
@@ -17,7 +22,7 @@ public class ContinuousSubarrays2762 {
         while(right < n) {
 //            add current element to frequency map
             freqMap.put(nums[right], freqMap.getOrDefault(nums[right], 0) + 1);
-//            while window violates the condition | nums[i] - nums[j]| <= 2
+//            while window violates the condition |nums[i] - nums[j]| <= 2
             while(freqMap.lastEntry().getKey() - freqMap.firstEntry().getKey() > 2) {
 //                remove leftmost element from frequency map
                 freqMap.put(nums[left], freqMap.get(nums[left]) - 1);
@@ -26,6 +31,24 @@ public class ContinuousSubarrays2762 {
                 left++;
             }
 //             add count of all valid sub arrays ending at right
+            count += right - left + 1;
+            right++;
+        }
+        return count;
+    }
+
+    public static long continuousSubarrays1(int[] nums) {
+        PriorityQueue<Integer> minHeap = new PriorityQueue<>(Comparator.comparingInt(a -> a));
+        PriorityQueue<Integer> maxHeap = new PriorityQueue<>((a,b) -> b - a);
+        int left = 0, right = 0, n = nums.length;
+        long count = 0;
+        while(right < n) {
+            maxHeap.offer(nums[right]);
+            minHeap.offer(nums[right]);
+            while(!minHeap.isEmpty() && maxHeap.peek() - minHeap.peek() > 2) {
+
+                left++;
+            }
             count += right - left + 1;
             right++;
         }

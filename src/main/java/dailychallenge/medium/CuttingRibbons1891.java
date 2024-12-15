@@ -7,7 +7,7 @@ public class CuttingRibbons1891 {
     }
 
     public static int maxLength(int[] ribbons, int k) {
-
+        return 0;
     }
 }
 
