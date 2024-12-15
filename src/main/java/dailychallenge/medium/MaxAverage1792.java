@@ -8,7 +8,7 @@ public class MaxAverage1792 {
         System.out.println(maxAverageRatio(classes, 2));
     }
 
-//    max heap; time: O(nlogk), space: O(n)
+//    max heap; time: O(nlogn), space: O(n)
     public static double maxAverageRatio(int[][] classes, int extraStudents) {
         PriorityQueue<double[]> maxHeap = new PriorityQueue<>((a,b) -> Double.compare(b[0],a[0]));
         for(int[] singleClass : classes) {
@@ -62,4 +62,14 @@ Constraints:
 classes[i].length == 2
 1 <= passi <= totali <= 105
 1 <= extraStudents <= 105
+ */
+
+/*
+Time complexity: O(nlogn)
+Building the max heap: Inserting each class into the max heap takes O(logn) time per insertion, and since there are n classes, this step takes O(nlogn) time.
+Distributing extra students: Each insertion and removal from the max heap takes O(logn) time. Since we perform this operation k⋅ times, this step takes O(k⋅logn) time.
+Calculating the final average pass ratio: This involves iterating through the heap, which takes O(nlogn) time in the worst case.
+Overall, the dominant factor is the initial heap construction and the distribution of extra students, leading to a time complexity of O(klogn+nlogn)=O(nlogn).
+Space complexity: O(n)
+The space complexity is determined by the max heap, which stores n elements (one for each class). Additionally, the lambda function and other local variables consume constant space.
  */
