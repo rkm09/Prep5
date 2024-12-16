@@ -34,7 +34,7 @@ public class MaxAverage1792 {
             int totalStudents = (int) current[2];
             totalPassRatio += (double) passes / totalStudents;
         }
-
+//        don't forget the final division by size
         return totalPassRatio / classes.length ;
     }
 
