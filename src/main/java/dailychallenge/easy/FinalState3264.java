@@ -9,10 +9,9 @@ public class FinalState3264 {
         System.out.println(Arrays.toString(getFinalState(nums, 5, 2)));
     }
 
-//    def; min heap;
+//    min heap; time: O(N + klogN), space: O(n) [note: this is in-place, lest you need to loop through again]
     public static int[] getFinalState(int[] nums, int k, int multiplier) {
         int n = nums.length;
-        int[] res = new int[n];
         PriorityQueue<int[]> pq = new PriorityQueue<>((a,b) -> {
             if(a[0] == b[0]) return a[1] - b[1];
             return a[0] - b[0];
@@ -21,14 +20,12 @@ public class FinalState3264 {
             pq.offer(new int[]{nums[i],i});
         }
         while(k-- > 0 && !pq.isEmpty()) {
-            int[] info = pq.poll();
-            pq.offer(new int[]{info[0] * multiplier, info[1]});
+            int[] smallest = pq.poll();
+            int index = smallest[1];
+            nums[index] *= multiplier;
+            pq.offer(new int[]{nums[index], index});
         }
-        while(!pq.isEmpty()) {
-            int[] info = pq.poll();
-            res[info[1]] = info[0];
-        }
-        return res;
+        return nums;
     }
 }
 
