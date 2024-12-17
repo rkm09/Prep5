@@ -9,8 +9,8 @@ public class ContinuousSubarrays2762 {
     public static void main(String[] args) {
         int[] nums = {5,4,2,4};
         int[] nums1 = {65,66,67,66,66,65,64,65,65,64};
-        //System.out.println(continuousSubarrays(nums1));
-        System.out.println(continuousSubarrays1(nums1));
+        System.out.println(continuousSubarrays(nums1));
+        //System.out.println(continuousSubarrays1(nums1));
     }
 
 //    sliding window (treemap); time: O(nlogk) ~ O(n), space: O(k) ~ O(1)
@@ -38,17 +38,26 @@ public class ContinuousSubarrays2762 {
         return count;
     }
 
+//    priority queue; time: O(nlogn), space: O(n)
     public static long continuousSubarrays1(int[] nums) {
-        PriorityQueue<Integer> minHeap = new PriorityQueue<>(Comparator.comparingInt(a -> a));
-        PriorityQueue<Integer> maxHeap = new PriorityQueue<>((a,b) -> b - a);
+//        note: we compare the values, but store indices in the priority queue
+        PriorityQueue<Integer> minHeap = new PriorityQueue<>(Comparator.comparingInt(a -> nums[a]));
+        PriorityQueue<Integer> maxHeap = new PriorityQueue<>((a,b) -> nums[b] - nums[a]);
         int left = 0, right = 0, n = nums.length;
         long count = 0;
         while(right < n) {
-            maxHeap.offer(nums[right]);
-            minHeap.offer(nums[right]);
-            while(!minHeap.isEmpty() && maxHeap.peek() - minHeap.peek() > 2) {
-
+            maxHeap.offer(right);
+            minHeap.offer(right);
+//            while window violates the condition |nums[i] - nums[j]| <= 2, shrink window from left
+            while(left < right && nums[maxHeap.peek()] - nums[minHeap.peek()] > 2) {
                 left++;
+//                remove indices that are now outside the window
+                while(!maxHeap.isEmpty() && maxHeap.peek() < left) {
+                    maxHeap.poll();
+                }
+                while(!minHeap.isEmpty() && minHeap.peek() < left) {
+                    minHeap.poll();
+                }
             }
             count += right - left + 1;
             right++;
