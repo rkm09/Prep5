@@ -17,23 +17,27 @@ public class RepeatLimit2182 {
         for(char c : s.toCharArray())
             freqMap.put(c, freqMap.getOrDefault(c, 0) + 1);
         PriorityQueue<Character> maxHeap = new PriorityQueue<>((a,b) -> Character.compare(b,a));
+//        single entry of each character on the heap
         for(char key : freqMap.keySet())
             maxHeap.offer(key);
         StringBuilder result = new StringBuilder();
         while(!maxHeap.isEmpty()) {
-            char ch = maxHeap.poll();
-            int count = freqMap.get(ch);
+            char currCh = maxHeap.poll();
+            int count = freqMap.get(currCh);
             int use = Math.min(count, repeatLimit);
+//            result.append(String.valueOf(currCh).repeat(Math.max(0, use)));
             for(int i = 0 ; i < use ; i++)
-                result.append(ch);
-            freqMap.put(ch, count - use);
-            if(freqMap.get(ch) > 0 && !maxHeap.isEmpty()) {
+                result.append(currCh);
+            freqMap.put(currCh, count - use);
+//            if the count of this character is still greater than zero, put a "breaker" and push back
+//            both the current and next if count > 0 of each, else if the heap is empty, return the result.
+            if(freqMap.get(currCh) > 0 && !maxHeap.isEmpty()) {
                 char nextCh = maxHeap.poll();
                 result.append(nextCh);
                 freqMap.put(nextCh, freqMap.get(nextCh) - 1);
                 if(freqMap.get(nextCh) > 0)
                     maxHeap.offer(nextCh);
-                maxHeap.offer(ch);
+                maxHeap.offer(currCh);
             }
         }
         return result.toString();
