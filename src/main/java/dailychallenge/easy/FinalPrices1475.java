@@ -1,6 +1,8 @@
 package dailychallenge.easy;
 
+import java.util.ArrayDeque;
 import java.util.Arrays;
+import java.util.Deque;
 
 public class FinalPrices1475 {
     public static void main(String[] args) {
@@ -8,8 +10,24 @@ public class FinalPrices1475 {
         System.out.println(Arrays.toString(finalPrices(prices)));
     }
 
-//    def; brute force; time: O(n^2), space: O(1)
+//    monotonic stack; time: O(n) [pushed or popped exactly once], space: O(n)
     public static int[] finalPrices(int[] prices) {
+        int n = prices.length;
+        //int[] res = prices.clone();
+        int[] res = new int[n];
+        Deque<Integer> stack = new ArrayDeque<>();
+        for(int i = 0 ; i < n ; i++) {
+            res[i] = prices[i];
+            while(!stack.isEmpty() && prices[stack.peek()] >= prices[i]) {
+                res[stack.pop()] -= prices[i];
+            }
+            stack.push(i);
+        }
+        return res;
+    }
+
+//    def; brute force; time: O(n^2), space: O(1)
+    public static int[] finalPrices1(int[] prices) {
         int n = prices.length;
         int[] res = new int[n];
         for(int i = 0 ; i < n ; i++) {
