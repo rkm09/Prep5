@@ -7,8 +7,22 @@ public class ReverseOddLevels2415 {
 
     }
 
-    public static TreeNode reverseOddLevels(TreeNode root) {
+//    depth first search;
+    public TreeNode reverseOddLevels(TreeNode root) {
+        traverseDfs(root.left, root.right, 0);
+        return root;
+    }
 
+    private void traverseDfs(TreeNode leftChild, TreeNode rightChild, int level) {
+        if(leftChild == null || rightChild == null) return;
+//        if level is even, swap left and right child
+        if(level % 2 == 0) {
+            int tempValue = leftChild.val;
+            leftChild.val = rightChild.val;
+            rightChild.val = tempValue;
+        }
+        traverseDfs(leftChild.left, rightChild.right, level + 1);
+        traverseDfs(leftChild.right, rightChild.left, level + 1);
     }
 }
 
@@ -43,4 +57,18 @@ Constraints:
 The number of nodes in the tree is in the range [1, 214].
 0 <= Node.val <= 105
 root is a perfect binary tree.
+ */
+
+/*
+DFS:
+As we traverse the tree recursively, we process the left and right children of the current root. For nodes at even levels, we swap the values at their left and right child nodes to reverse the arrangement of nodes below their level, while leaving the children of odd levels unchanged.
+Let's discuss the implementation of the recursive function traverseDFS(node, leftChild, rightChild, int level):
+Base case: If leftChild or rightChild is null, then we can stop the recursive traversal for further child nodes.
+Even level: If the current level is even, swap the values rooted at leftChild and rightChild.
+Perfect binary tree: Since the binary tree is perfect, it is symmetrical in nature. Therefore, to reverse the levels, we would want to swap the left value of the left child with the right value of the right child, and the right value of the left child with the left value of the right child.
+Let n be the number of nodes in the given tree.
+Time complexity: O(n)
+In the worst case, the algorithm visits each node exactly once, resulting in a time complexity of O(n). The swapping at each recursive step takes constant time. Therefore, the overall time complexity is O(n).
+Space complexity: O(logn))
+The space complexity is determined by the recursion depth of the DFS. Since we are given a perfect binary tree, the height of the tree is bounded by logn. Therefore, the space complexity is given by O(logn)).
  */
