@@ -2,12 +2,17 @@ package dailychallenge.medium;
 
 import common.TreeNode;
 
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Deque;
+import java.util.List;
+
 public class ReverseOddLevels2415 {
     public static void main(String[] args) {
 
     }
 
-//    depth first search;
+//    depth first search; time: O(n), space: O(logn)
     public TreeNode reverseOddLevels(TreeNode root) {
         traverseDfs(root.left, root.right, 0);
         return root;
@@ -23,6 +28,38 @@ public class ReverseOddLevels2415 {
         }
         traverseDfs(leftChild.left, rightChild.right, level + 1);
         traverseDfs(leftChild.right, rightChild.left, level + 1);
+    }
+
+//    bfs; time: O(n), space: O(n)
+    public TreeNode reverseOddLevels1(TreeNode root) {
+        if(root == null) return null; // return null if empty
+        Deque<TreeNode> queue = new ArrayDeque<>();
+        queue.offer(root);  // start BFS with root node
+        int level = 0;
+        while(!queue.isEmpty()) {
+            int size = queue.size();
+            List<TreeNode> currentLevelNodes = new ArrayList<>();
+//            process all the nodes of the current level
+            for(int i = 0 ; i < size ; i++) {
+                TreeNode node = queue.poll();
+                currentLevelNodes.add(node);
+                if(node.left != null) queue.offer(node.left);
+                if(node.right != null) queue.offer(node.right);
+            }
+//            reverse the nodes if the current level is odd
+            if(level % 2 == 1) {
+                int left = 0, right = currentLevelNodes.size() - 1;
+                while(left < right) {
+                    int temp = currentLevelNodes.get(left).val;
+                    currentLevelNodes.get(left).val = currentLevelNodes.get(right).val;
+                    currentLevelNodes.get(right).val = temp;
+                    left++;
+                    right--;
+                }
+            }
+            level++;
+        }
+        return root;
     }
 }
 
