@@ -9,42 +9,42 @@ public class MinimumOperations2471 {
 
     }
 
-//    bfs; time: O(nlogn), space: O(n)
+//    bfs using map; time: O(nlogn), space: O(n)
     public int minimumOperations(TreeNode root) {
         Deque<TreeNode> queue = new ArrayDeque<>();
         queue.offer(root);
-        int swapCount = 0;
+        int totalSwaps = 0;
         while(!queue.isEmpty()) {
-            int size = queue.size();
-            int[] original = new int[size];
-            for(int i = 0 ; i < size ; i++) {
+            int levelSize = queue.size();
+            int[] levelNodes = new int[levelSize];
+            for(int i = 0 ; i < levelSize ; i++) {
                 TreeNode node = queue.poll();
-                original[i] = node.val;
+                levelNodes[i] = node.val;
                 if(node.left != null) queue.offer(node.left);
                 if(node.right != null) queue.offer(node.right);
             }
-            swapCount += minimumSwap(original);
+            totalSwaps += minimumSwap(levelNodes);
         }
-        return swapCount;
+        return totalSwaps;
     }
 
     private int minimumSwap(int[] original) {
         int[] target = original.clone();
         Arrays.sort(target);
-        int swap = 0;
+        int swaps = 0;
         Map<Integer, Integer> posMap = new HashMap<>();
         for(int i = 0 ; i < original.length ; i++) {
             posMap.put(original[i], i);
         }
         for(int i = 0 ; i < original.length ; i++) {
             if(original[i] != target[i]) {
-                swap++;
+                swaps++;
                 int newPos = posMap.get(target[i]);
                 posMap.put(original[i], newPos);
                 original[newPos] = original[i];
             }
         }
-        return swap;
+        return swaps;
     }
 }
 

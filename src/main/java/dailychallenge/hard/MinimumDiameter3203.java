@@ -6,7 +6,7 @@ public class MinimumDiameter3203 {
     }
 
     public static int minimumDiameterAfterMerge(int[][] edges1, int[][] edges2) {
-
+        return 0;
     }
 }
 
