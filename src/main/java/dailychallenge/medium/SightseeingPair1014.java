@@ -20,6 +20,19 @@ public class SightseeingPair1014 {
         }
         return maxScore;
     }
+
+//    space optimized dp; time: O(n), space: O(1)
+    public static int maxScoreSightseeingPair1(int[] values) {
+        int n = values.length, maxScore = 0;
+        int maxLeftScore = values[0];
+        for(int i = 1 ; i < n ; i++) {
+            int currentRightScore = values[i] - i;
+            maxScore = Math.max(maxScore, maxLeftScore + currentRightScore);
+            int currentLeftScore = values[i] + i;
+            maxLeftScore = Math.max(maxLeftScore, currentLeftScore);
+        }
+        return maxScore;
+    }
 }
 
 /*
