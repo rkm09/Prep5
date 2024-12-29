@@ -9,10 +9,10 @@ public class LowestCommonAncestorII1644 {
 
     }
 
-//    dfs; time: O(n), space: O(n)
+//    dfs(2/3 conditions); time: O(n), space: O(n)
     public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
-        TreeNode lca = dfs(root,p,q);
-        return nodesFound ? lca : null;
+        TreeNode ans = dfs(root,p,q);
+        return nodesFound ? ans : null;
     }
 
     private TreeNode dfs(TreeNode node, TreeNode p, TreeNode q) {
@@ -27,6 +27,33 @@ public class LowestCommonAncestorII1644 {
         if((left != null && right != null) || node == p || node == q)
             return node;
         return left != null ? left : right;
+    }
+
+//    dfs; time: O(n), space: O(n)
+    public TreeNode lowestCommonAncestor1(TreeNode root, TreeNode p, TreeNode q) {
+        TreeNode lca = lca(root, p, q);
+//        if lca is p, verify q is in its subtree
+        if(lca == p)
+            return dfs(lca, q) ? lca : null;
+//        if lca is q, verify p is in its subtree
+        if(lca == q)
+            return dfs(lca, p) ? lca : null;
+//        if neither is the ancestor return lca
+        return lca;
+    }
+
+    private TreeNode lca(TreeNode node, TreeNode p, TreeNode q) {
+        if(node == null || node == p || node == q) return node;
+        TreeNode left = lca(node.left, p, q);
+        TreeNode right = lca(node.right, p, q);
+        if(left != null && right != null) return node;
+        return left != null ? left : right;
+    }
+
+    private boolean dfs(TreeNode node, TreeNode target) {
+        if(node == null) return false;
+        if(node == target) return true;
+        return dfs(node.left, target) || dfs(node.right, target);
     }
 }
 
