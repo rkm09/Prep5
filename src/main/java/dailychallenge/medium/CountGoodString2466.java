@@ -1,13 +1,16 @@
 package dailychallenge.medium;
 
+import java.util.Arrays;
+
 public class CountGoodString2466 {
+    int mod = 1_000_000_007;
+    int[] memo;
     public static void main(String[] args) {
 
     }
 
-//    bottom up dp; time: O(n), space: O(n)
+//    bottom up dp; time: O(n), space: O(n) [faster]
     public int countGoodStrings(int low, int high, int zero, int one) {
-        int mod = 1_000_000_007;
 //        use dp[i] to record the number of good strings of length i
         int[] dp = new int[high + 1];
         dp[0] = 1;
@@ -27,6 +30,32 @@ public class CountGoodString2466 {
             count %= mod;
         }
         return count;
+    }
+
+//    top down (recursive + memoization); time: O(n), space: O(n)
+    public int countGoodStrings1(int low, int high, int zero, int one) {
+        memo = new int[high + 1];
+        int answer = 0;
+        Arrays.fill(memo, - 1);
+        memo[0] = 1;
+        for(int end = low ; end <= high ; end++) {
+            answer += dfs(end, zero, one);
+            answer %= mod;
+        }
+        return answer;
+    }
+
+    private int dfs(int end, int zero, int one) {
+//        base case
+        if(memo[end] != -1)
+            return memo[end];
+        int count = 0;
+        if(end >= zero)
+            count += dfs(end - zero, zero, one);
+        if(end >= one)
+            count += dfs(end - one, zero, one);
+        memo[end] = count % mod;
+        return memo[end];
     }
 }
 
@@ -55,7 +84,11 @@ Constraints:
  */
 
 /*
+bottom-up:
 Note that every good string either ends with zero of 0s or one of 1s, which in our case is 0 or 11.
 If a good string of length 5 ends with 0, it means that every good string of length 4 can be turned into a good string of length 5 by appending 0. Thus we increment dp[5] by dp[4], which in the general case is dp[end] += dp[end - zero].
 Note that it is suggested to check if end >= zero before we increment dp[end], and only apply the increase if end >= zero.
+top-down:
+The trick is as described before, each time a recursive function calls itself, it reduces the given problem dfs(end) into subproblems dfs(end - zero) and dfs(end - one). The recursion call continues until it reaches a point where the subproblem can be solved without further recursion, that is dfs(0) = 1.
+Similarly, we will also build an auxiliary array dp to avoid repeated computation. Initially, we set every value dp[i] (except dp[0]) as -1, which also implies that dp[i] is not visited. During the recursion, if dp[end] != -1, it means we have already calculated dfs(end) previously, so just return dp[end].
  */
