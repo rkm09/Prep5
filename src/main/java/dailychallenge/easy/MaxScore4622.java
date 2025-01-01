@@ -6,8 +6,37 @@ public class MaxScore4622 {
         System.out.println(maxScore(s));
     }
 
-//    def; left sum & right sum; time: O(n), space: O(n)
+//    one pass; time: O(n), space: O(1)
     public static int maxScore(String s) {
+        int n = s.length(), ones = 0, zeros = 0;
+        int best = Integer.MIN_VALUE;
+        for(int i = 0 ; i < n - 1 ; i++) {
+            if(s.charAt(i) == '1') ones++;
+            else zeros++;
+            best = Math.max(best, zeros - ones);
+        }
+        if(s.charAt(n - 1) == '1') ones++;
+        return best + ones;
+    }
+
+//    count zeros and ones; time: O(n), space: O(1)
+    public static int maxScore1(String s) {
+        int ones = 0, n = s.length();
+        for(int i = 0 ; i < n ; i++)
+            if(s.charAt(i) == '1') ones++;
+        int ans = 0, zeros = 0;
+        for(int i = 0 ; i < n - 1; i++) {
+            if(s.charAt(i) == '1')
+                ones--;
+            else
+                zeros++;
+            ans = Math.max(ans, zeros + ones);
+        }
+        return ans;
+    }
+
+//    def; left sum & right sum; time: O(n), space: O(n)
+    public static int maxScore2(String s) {
         int n = s.length();
         int[] leftSum = new int[n];
         int[] rightSum = new int[n];
@@ -48,4 +77,12 @@ Output: 3
 Constraints:
 2 <= s.length <= 500
 The string s consists of characters '0' and '1' only.
+ */
+
+/*
+score = Z[L] + O[R] => O[R] = O[T] - O[L] => Z[L] + O[T] - O[L] = Z[L] - O[L] + O[T]
+Recall that we don't iterate i over the final index since it would mean having an empty right part. Once we are done iterating over s, we will check the final index to see if it is a 1. If it is, we increment ones.
+The reason we explicitly check the final index for 1 is that we want ones to represent O
+in the end, but when we calculate ones, we don't iterate over the last index, so we need to account for it. Now, we have best as the maximum of all Z
+and ones represents O , we can return best + ones as the answer.
  */
