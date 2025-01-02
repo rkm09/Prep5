@@ -42,7 +42,7 @@ public class MaxScore4622 {
         int[] rightSum = new int[n];
         leftSum[0] = s.charAt(0) == '0' ? 1 : 0;
         rightSum[n - 1] = s.charAt(n - 1) == '1' ? 1 : 0;
-        for(int i = 1 ; i < n ; i++)
+        for(int i = 1 ; i < n - 1; i++)
             leftSum[i] = leftSum[i - 1] + (s.charAt(i) == '0' ? 1 : 0);
         for(int i = n - 2 ; i > 0 ; i--)
             rightSum[i] = rightSum[i + 1] + (s.charAt(i) == '1' ? 1 : 0);
@@ -84,5 +84,5 @@ score = Z[L] + O[R] => O[R] = O[T] - O[L] => Z[L] + O[T] - O[L] = Z[L] - O[L] + 
 Recall that we don't iterate i over the final index since it would mean having an empty right part. Once we are done iterating over s, we will check the final index to see if it is a 1. If it is, we increment ones.
 The reason we explicitly check the final index for 1 is that we want ones to represent O
 in the end, but when we calculate ones, we don't iterate over the last index, so we need to account for it. Now, we have best as the maximum of all Z
-and ones represents O , we can return best + ones as the answer.
+and ones represents O, we can return best + ones as the answer.
  */
