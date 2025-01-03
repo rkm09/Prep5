@@ -6,8 +6,44 @@ public class SplitArray2270 {
         System.out.println(waysToSplitArray(nums));
     }
 
-//    def; time: O(n), space: O(n)
+//    optimised prefix sum; time: O(n), space: O(1)
     public static int waysToSplitArray(int[] nums) {
+//        keep track of all elements on the left and right side
+        long leftSum = 0, rightSum = 0, n = nums.length;
+//        initially all elements are on the right side
+        for(int num : nums)
+            rightSum += num;
+        int count = 0;
+//        try each possible split position; note it needs to exclude last position
+        for(int i = 0 ; i < n - 1; i++) {
+//            move current element from right to left side
+            leftSum += nums[i];
+            rightSum -= nums[i];
+//            check if this creates a valid split
+            if(leftSum >= rightSum) count++;
+        }
+        return count;
+    }
+
+//  prefix sum; time: O(n), space: O(n)
+    public static int waysToSplitArray1(int[] nums) {
+        int n = nums.length;
+        long[] prefixSum = new long[n];
+        int count = 0;
+        prefixSum[0] = nums[0];
+        for(int i = 1 ; i < n ; i++) {
+            prefixSum[i] = prefixSum[i - 1] + nums[i];
+        }
+        for(int i = 0 ; i < n - 1; i++) {
+            long leftSum = prefixSum[i];
+            long rightSum = prefixSum[n - 1] - prefixSum[i];
+            if(leftSum >= rightSum) count++;
+        }
+        return count;
+    }
+
+//    def; time: O(n), space: O(n)
+    public static int waysToSplitArray2(int[] nums) {
         int n = nums.length;
         long[] leftSum = new long[n];
         long[] rightSum = new long[n];
