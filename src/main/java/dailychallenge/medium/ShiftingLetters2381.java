@@ -1,5 +1,6 @@
 package dailychallenge.medium;
 
+
 public class ShiftingLetters2381 {
     public static void main(String[] args) {
         String s = "abc";
@@ -8,9 +9,11 @@ public class ShiftingLetters2381 {
     }
 
     public static String shiftingLetters(String s, int[][] shifts) {
-        
+        return "";
     }
+
 }
+
 
 /*
 You are given a string s of lowercase English letters and a 2D integer array shifts where shifts[i] = [starti, endi, directioni]. For every i, shift the characters in s from the index starti to the index endi (inclusive) forward if directioni = 1, or shift the characters backward if directioni = 0.
