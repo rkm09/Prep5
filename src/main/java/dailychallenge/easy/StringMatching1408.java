@@ -9,12 +9,12 @@ public class StringMatching1408 {
     public static void main(String[] args) {
         String[] words = {"mass","as","hero","superhero"};
         String[] words1 = {"leetcoder","leetcode","od","hamlet","am"};
-        System.out.println(stringMatching(words1));
+        System.out.println(stringMatchingN(words1));
     }
 
-    public static List<String> stringMatching(String[] words) {
-        
-    }
+//    public static List<String> stringMatching(String[] words) {
+//
+//    }
 
 //    def; brute force;
     public static List<String> stringMatchingN(String[] words) {
