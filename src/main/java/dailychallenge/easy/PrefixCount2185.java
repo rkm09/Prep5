@@ -7,7 +7,7 @@ public class PrefixCount2185 {
         System.out.println(prefixCount(words, pref));
     }
 
-//    def; using inbuilt;
+//    def; using inbuilt; time: O(m.n), space: O(1)
     public static int prefixCount(String[] words, String pref) {
         int count = 0;
         for(String word : words) {
