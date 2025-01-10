@@ -19,6 +19,7 @@ public class WordSubsets916 {
         for(String word : words2) {
             int[] words2Count = count(word);
             for(int i = 0 ; i < 26 ; i++) {
+//                consider the max frequency of a character in any word
                 words2Max[i] = Math.max(words2Max[i], words2Count[i]);
             }
         }
