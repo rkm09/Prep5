@@ -7,6 +7,9 @@ public class CanBeValid2116 {
     public static void main(String[] args) {
         String s = "))()))";
         String locked = "010100";
+        String s1 = "()))(()(()()()()(((())())((()((())";
+        String locked1 = "1100000000000010000100001000001101";
+        //System.out.println(canBeValid1(s1, locked1)); // true
         System.out.println(canBeValid(s, locked));
     }
 
@@ -42,6 +45,44 @@ public class CanBeValid2116 {
         }
         return openBrackets.isEmpty();
     }
+
+//    constant space; time: O(n), space: O(1)
+    public static boolean canBeValid1(String s, String locked) {
+        int openBrackets = 0, unlocked = 0, n = s.length();
+        if(n % 2 != 0) return false;
+        for(int i = 0 ; i < n ; i++)
+        {
+            if(locked.charAt(i) == '0')
+                unlocked++;
+            else if(s.charAt(i) == '(')
+                openBrackets++;
+            else {
+                if(s.charAt(i) == ')') {
+                    if(openBrackets > 0)
+                        openBrackets--;
+                    else if(unlocked > 0)
+                        unlocked--;
+                    else
+                        return false;
+                }
+            }
+        }
+        int balance = 0;
+        for(int i = n - 1 ; i >= 0 ; i--) {
+            if(locked.charAt(i) == '0') {
+                balance--;
+                unlocked--;
+            } else if(s.charAt(i) == '(') {
+                balance++;
+                openBrackets--;
+            } else if(s.charAt(i) == ')') {
+                balance--;
+            }
+            if(balance > 0) return false;
+            if(unlocked == 0 && openBrackets == 0) break;
+        }
+        return openBrackets <= 0;
+    }
 }
 
 /*
@@ -74,4 +115,15 @@ n == s.length == locked.length
 1 <= n <= 105
 s[i] is either '(' or ')'.
 locked[i] is either '0' or '1'.
+ */
+
+/*
+constant space:
+The stack indices are required when matching the remaining opening brackets with the unlocked characters.
+To address this, we could explore a trick to match the brackets using only the counts of the unpaired opening brackets and unlocked characters.
+Since we want to balance the remaining opening brackets, note that the unlocked characters towards the end of the string can be converted into closing brackets to pair them up. This allows us to iterate from the end of the string s while maintaining a balance variable to check whether the parentheses are balanced.
+We use the integer counters openBrackets and unlocked from the previous steps:
+If we encounter an unlocked character, we can treat it as a closing bracket.
+If the balance variable indicates that the string is unbalanced at any point, we return false.
+Finally, if all the openBrackets are balanced by the end of the iteration, we can return true. Otherwise, we return false.
  */
